@@ -12,7 +12,9 @@ public:
             auto val = list_it->second;
             container_list_.erase(list_it);
             container_list_.push_front({key, val});
-            hash_map_.insert({key, container_list_.begin()});
+            // In std::unordered_map, calling insert() with an existing key does nothing and will not overwrite the existing value.
+            // Bug: hash_map_.insert({key, container_list_.begin()});
+            hash_map_[key] = container_list_.begin();
             return val;
         } else {
             return -1;
@@ -29,7 +31,9 @@ public:
             container_list_.pop_back();
         }
         container_list_.push_front({key, value});
-        hash_map_.insert({key, container_list_.begin()});
+        // In std::unordered_map, calling insert() with an existing key does nothing and will not overwrite the existing value.
+        // Bug: hash_map_.insert({key, container_list_.begin()});
+        hash_map_[key] = container_list_.begin();
     }
 
 private:
